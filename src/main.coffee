@@ -5,49 +5,79 @@ require('app-module-path').addPath('./modules')
 colors = require('colors')
 
 # CLI interface
-cli = require('vorpal')();
+vorpal = require('vorpal')();
 
-# Command: Process
-cli
-  .command('process')
-  .alias('p')
-  .description('Reads and processes all supported files in ../data directory')
+# Hide default help and exit commands from automated menu's
+vorpal.find("help").hidden()
+vorpal.find("exit").hidden()
+
+
+# Command: Import
+vorpal
+.command('read')
+.alias('r')
+.action((args, callback) ->
+  require('read/reader')()
+  console.log('Reading done')
+  callback()
+)
+.hidden()
+
+# Command: Import
+vorpal
+  .command('import')
+  .alias('i')
+  .description('Import mutations from supported files')
   .action((args, callback) ->
-      require('processor')()
-      callback()
+      require('import/importer')().bind(@).then(-> callback())
   )
-
-# Command: Read
-cli
-  .command('read')
-  .alias('r')
-  .description('Reads all Bookbot csv files currently used as backup')
+  
+# Command: Append
+vorpal
+  .command('supplement')
+  .alias('s')
+  .description('Supplement mutations with category, invoice date and VAT')
   .action((args, callback) ->
       callback()
   )
 
 # Command: Write
-cli
+vorpal
   .command('write')
   .alias('w')
-  .description('Dumps the Bookbot data in a csv file')
+  .description('Write to database')
   .action((args, callback) ->
+      require('write/writer')()
       callback()
   )
 
 # Command: Analyze
-cli
+vorpal
   .command('analyze')
   .alias('a')
-  .description('Analyze accountancy information')
+  .description('Analyze mutations to financial statement')
   .action((args, callback) ->
-    require('analyzer')()
-    callback()
+    require('analyze/analyzer')().bind(@).then(-> callback())
   )
 
-# Test
-require('processor')()
-require('writer')()
+# Command: Export
+vorpal
+.command('export')
+.alias('e')
+.description('Export financial statement')
+.action((args, callback) ->
+  callback()
+)
 
-# Start
-cli.delimiter('bookbot$').show()
+
+# Read database
+require('read/reader')()
+
+# Welcome
+console.log('\nBookbot here! What can I do for you?'.green)
+
+# Show help
+vorpal.exec("help")
+
+# Start CLI
+vorpal.delimiter('Bookbot$'.green).show()
