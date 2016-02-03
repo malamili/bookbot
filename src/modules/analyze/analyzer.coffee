@@ -23,6 +23,16 @@ module.exports = ->
   for account, saldo of accounts
     console.log(account + ': ' + saldo.toEuro())
   
+   
+  console.log('n')
+  
+  
+  
+  for mutation in repository.all()
+    if mutation.invoiceDate?
+      console.log(mutation.amount)
+    
+    
   # Return
   defer = Promise.defer()
   defer.resolve()  

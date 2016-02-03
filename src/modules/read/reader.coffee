@@ -19,5 +19,6 @@ readMutations = ->
     # Split on breaks and remove the first row (headers)
     fs.readFileSync('../data/' + file, 'utf-8').split('\n').slice(1)
   catch error
+    console.log(error)
     []
   

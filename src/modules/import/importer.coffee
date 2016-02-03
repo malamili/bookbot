@@ -66,7 +66,9 @@ processRecord = (record, count) ->
   # This is always the same for every record
   mutation.fromAccount = items[0]
   mutation.currency    = items[1]
-  mutation.date        = items[2]
+  
+  # Convert 20131102 to 02/11/13
+  mutation.date        = items[2].slice(6) +'/'+ items[2].slice(4,6) +'/'+ items[2].slice(2,4)
   mutation.amount      = items[6]
 
   processRecordDescription(mutation, items[7]).then(->

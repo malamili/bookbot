@@ -1,8 +1,15 @@
+
 # Path resolving making it non-relative accessible from any location.
 require('app-module-path').addPath('./modules')
 
 # Usage: "hello".green or 'world'.red
 colors = require('colors')
+
+# Read database
+require('read/reader')()
+
+#require('category/categorizer')()
+#return
 
 # CLI interface
 vorpal = require('vorpal')();
@@ -11,67 +18,68 @@ vorpal = require('vorpal')();
 vorpal.find("help").hidden()
 vorpal.find("exit").hidden()
 
+# Run module returning a promise
+run = (module, callback) ->
+  require(module)().bind(@).then(-> callback())
 
-# Command: Import
+## COMMANDS
 vorpal
-.command('read')
-.alias('r')
-.action((args, callback) ->
-  require('read/reader')()
-  console.log('Reading done')
-  callback()
-)
-.hidden()
+  .command('status')
+  .alias('st')
+  .description('(st) Show current status')
+  .action((args, callback) ->
+  )
 
-# Command: Import
+vorpal
+  .command('read')
+  .alias('re')
+  .description('(re) Read mutations from database')
+  .action((args, callback) ->
+    require('read/reader')()
+    console.log('Reading done')
+    callback()
+  )
+
 vorpal
   .command('import')
-  .alias('i')
-  .description('Import mutations from supported files')
+  .alias('im')
+  .description('(im) Import mutations from supported files')
+  .action((args, callback) -> run('import/importer', callback))
+  
+vorpal
+  .command('categorize')
+  .alias('ca')
+  .description('(ca) Categorize mutations')
   .action((args, callback) ->
-      require('import/importer')().bind(@).then(-> callback())
+      require('category/categorizer')().bind(@).then(-> callback())
   )
   
-# Command: Append
-vorpal
-  .command('supplement')
-  .alias('s')
-  .description('Supplement mutations with category, invoice date and VAT')
-  .action((args, callback) ->
-      callback()
-  )
-
-# Command: Write
 vorpal
   .command('write')
-  .alias('w')
-  .description('Write to database')
+  .alias('wr')
+  .description('(wr) Write to database')
   .action((args, callback) ->
       require('write/writer')()
       callback()
   )
 
-# Command: Analyze
 vorpal
   .command('analyze')
-  .alias('a')
-  .description('Analyze mutations to financial statement')
+  .alias('an')
+  .description('(an) Analyze mutations to financial statement')
   .action((args, callback) ->
     require('analyze/analyzer')().bind(@).then(-> callback())
   )
 
-# Command: Export
 vorpal
-.command('export')
-.alias('e')
-.description('Export financial statement')
-.action((args, callback) ->
-  callback()
-)
+  .command('export')
+  .alias('ex')
+  .description('(ex) Export financial statement')
+  .action((args, callback) ->
+    callback()
+  )
 
-
-# Read database
-require('read/reader')()
+## END COMMANDS
 
 # Welcome
 console.log('\nBookbot here! What can I do for you?'.green)

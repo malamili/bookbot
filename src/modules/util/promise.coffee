@@ -1,10 +1,8 @@
 Promise = require("bluebird")
 
-
 module.exports = 
   
   # Runs functions returning promises in sequence, then resolves when all are done
-  # Very nifty if I may say myself ;)
   sequence: (functions) ->
     defer = Promise.defer()
     
@@ -13,7 +11,6 @@ module.exports =
         defer.resolve()
       else        
         functions[index].call().then(-> execute(index + 1))
-
 
     # Start with first
     execute(0)
