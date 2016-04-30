@@ -16,7 +16,7 @@ categories = require('category/categories')
 # Goes through each mutation in the repository that needs categorizeing and sequentially categorizes data
 categorizeAll = ->
 
-  # First populate the list of mutations that need categorizeing
+  # First populate the list of mutations that need categorizing
   mutations = repository.notCategorized()
   
   # Save length
@@ -28,7 +28,7 @@ categorizeAll = ->
   # Filter out the completed mutations, leaving the mutations that we need to ask user for information
   mutations = (mutation for mutation in mutations when mutation.notCategorized() or mutation.notInvoiced())
     
-  # Prepare sequential functions that return promises for categorizeation
+  # Prepare sequential functions that return promises for categorization
   functions = []
   count = {asked: 0, total: mutations.length, autocompleted: totalNotCategorized - mutations.length, continue: true}
   mutations.forEach((mutation) ->
