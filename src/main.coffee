@@ -5,10 +5,15 @@ require('app-module-path').addPath('./modules')
 # Usage: "hello".green or 'world'.red
 colors = require('colors')
 
-# Read database
-require('read/reader')()
+# Run module returning a promise
+run = (module, callback) ->
+  require(module)().bind(@).then(-> callback())
 
+# Shortcuts
+#require('read/reader')()
+#run('import/importer', ->)
 #require('category/categorizer')()
+
 #return
 
 # CLI interface
@@ -18,9 +23,6 @@ vorpal = require('vorpal')();
 vorpal.find("help").hidden()
 vorpal.find("exit").hidden()
 
-# Run module returning a promise
-run = (module, callback) ->
-  require(module)().bind(@).then(-> callback())
 
 ## COMMANDS
 vorpal
