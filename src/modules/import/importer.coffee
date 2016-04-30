@@ -16,7 +16,7 @@ inquirer = require("inquirer");
 processAll = -> 
   functions = []
   ([file, data] for file, data of readFiles()).forEach((item) ->
-    functions.push((-> process(item[0], item[1])))
+    functions.push((-> processFile(item[0], item[1])))
   )
   
   PromiseUtil.sequence(functions)  
@@ -38,7 +38,7 @@ readFiles = ->
   return content
 
   
-process = (file, data) ->
+processFile = (file, data) ->
   console.log('\n' + file)
   
   records = data.split('\n')
@@ -68,7 +68,7 @@ processRecord = (record, count) ->
   mutation.currency    = items[1]
   
   # Convert 20131102 to 02/11/13
-  mutation.date        = items[2].slice(6) +'/'+ items[2].slice(4,6) +'/'+ items[2].slice(2,4)
+  mutation.date        = items[2].slice(6) + '/' + items[2].slice(4,6) + '/' + items[2].slice(2,4)  
   mutation.amount      = items[6]
 
   processRecordDescription(mutation, items[7]).then(->
