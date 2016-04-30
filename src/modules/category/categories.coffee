@@ -340,15 +340,15 @@ class Categories
     (category['name'] for category in @categories[mainCategory].subcategories)
 
   needsInvoiceDate: (mutation, mainCategory, subCategory) ->
+    # May have already been categorized
+    mainCategory = mutation.mainCategory if not mainCategory?
+    subCategory  = mutation.subCategory if not subCategory?
+    
     main = @categories[mainCategory]
     return main.hasInvoice
 
   needsVAT: (mutation, mainCategory, subCategory) ->
     @needsInvoiceDate(mutation, mainCategory, subCategory)
-
-
-
-
 
 
 module.exports = new Categories()
