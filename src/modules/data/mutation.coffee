@@ -67,11 +67,11 @@ class Mutation
     @serialize('##').replace(/\s+/g, '').hash()
   
   printBasic: ->
-    console.log("\nTo: \t\t" + @toAccountName.green)
-    console.log("Account nr: \t" + @toAccount.green)
-    console.log("Amount: \t" + ("€"  + @amount).magenta)
     console.log("Date: \t\t" + @date.yellow)
-    console.log("Description: \t" + @description.yellow + "\n")
+    console.log("Amount: \t" + ("€"  + @amount).magenta)
+    console.log("\nTo: \t\t" + p(@toAccountName).green)
+    console.log("Account nr: \t" + p(@toAccount).green)
+    console.log("Description: \t" + p(@description.green) + "\n")
     
     if @mainCategory? and @mainCategory isnt ''
       console.log("Main Category: \t" + @mainCategory.cyan)

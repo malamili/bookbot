@@ -131,6 +131,7 @@ class Descriptions
   PIN: (mutation, description) ->
     mutation.type = 'PIN'
 
+    mutation.toAccount      = ''
     mutation.toAccountName  = description.trimDeep().slice(29,-7)     # SO-PGU-Westraven UTRECHT
     mutation.description    = description.trim().slice(3).trimDeep().slice(0, 24) + ' ' + description.trim().slice(-6) # NR:6S71FQ 20.01.16/12.43 PAS301
   

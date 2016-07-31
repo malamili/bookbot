@@ -76,7 +76,7 @@ processRecord = (record, count) ->
       repository.addMutation(mutation)
       count.added += 1
     else
-      console.log('Skipped:')
+      console.log('Skipped because already found in repository:')
       console.log(mutation)
       console.log('')
   )
